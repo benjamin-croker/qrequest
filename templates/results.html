@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example</title>
+  </head>
+  <body>
+    
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">  
+
+  <head>
+    <meta charset="utf-8">
+    <title>Set up {{query}}</title>
+    <!-- Bootstrap core CSS and default theme-->
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap-theme.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='qrequest.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="qrequest-nav" role="navigation">
+      <div class="container">
+        <div class="navbar-brand qrequest-nav-item">{{ title }}</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/">{{ title }} home</a></li>
+            {% for q in query_list %}
+            {% if q == query %}
+            <li class="active"><a href="/setup/{{ q }}">{{ q }}</a></li>
+            {% else %}
+            <li><a href="/setup/{{ q }}">{{ q }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-10">
+          <p class="lead">All results for {{query}}</p>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                {% for h in header %}
+                <th>{{h}}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in data %}
+              <tr>
+                {% for r in row %}
+                <td>{{r}}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">  
+
+  <head>
+    <meta charset="utf-8">
+    <title>Set up {{query}}</title>
+    <!-- Bootstrap core CSS and default theme-->
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap-theme.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='qrequest.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="qrequest-nav" role="navigation">
+      <div class="container">
+        <div class="navbar-brand qrequest-nav-item">{{ title }}</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/">{{ title }} home</a></li>
+            {% for q in query_list %}
+            {% if q == query %}
+            <li class="active"><a href="#">{{ q }}</a></li>
+            {% else %}
+            <li><a href="/setup/{{ q }}">{{ q }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-10">
+          {% if params_list|length == 0 %}
+          <p class="lead">Query has no variables to set. Press button to run.</p>
+          {% else %}
+          <p class="lead">Enter variables</p>
+          {% endif %}
+
+          <form action="/run/{{ query }}" method="POST" class="form-horizontal">
+            {% for p in params_list %}
+            <div class="form-group">
+              <label for="{{ p }}" class="control-label col-md-2">{{ p }}</label>
+              <div class="col-md-6">
+                  <input type="text" class="form-control" name="{{ p }}">
+              </div>
+            </div>
+            {% endfor %}
+            <div class="form-group">
+              <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Run Query</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
