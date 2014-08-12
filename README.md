@@ -18,5 +18,12 @@ python qrequest.py
 
 then look at the example queries and example sqlite database.
 
-The URL format for the json endpoint is `/api/query_name.json?first_param=value1&second_param=value2` etc.
-The URL format for the CSV endpoint is `/api/query_name.csv?first_param=value1&second_param=value2` etc.
+The URL format for the json endpoint is
+```
+/api/query_name.json?first_param=value1&second_param=value2
+```
+
+The URL format for the CSV endpoint is
+```
+/api/query_name.csv?first_param=value1&second_param=value2
+``` 
