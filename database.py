@@ -1,6 +1,8 @@
 import json
 import os
 import re
+import io
+import csv
 
 # set path names and db connection settings
 SQL_PATH = "sql"
@@ -27,8 +29,24 @@ def construct_list(cursor):
     return header, data
 
 
+def construct_csv(cursor):
+    """ transforms the db cursor rows into a csv file string
+    """
+    # def encode_row(row, encoding='utf-8'):
+    #     return [r.encode(encoding) for r in row]
+    header, data = construct_list(cursor)
+    output = io.BytesIO()
+    writer = csv.writer(output)
+
+    writer.writerow(header)
+    for row in data:
+        writer.writerow(row)
+
+    return output.getvalue()
+
+
 def load_query(query_filename):
-    with open(os.path.join(SQL_PATH, query_filename)) as f:
+    with open(os.path.join(SQL_PATH, query_filename+'.sql')) as f:
         return f.read()
 
 
@@ -42,7 +60,7 @@ def get_queries():
     # returns a list of all the sql files
     filenames = os.listdir(SQL_PATH)
     # filter for files ending in ".sql"
-    return [f for f in filenames if f[-4:] == ".sql"]
+    return [f[:-4] for f in filenames if f[-4:] == ".sql"]
 
 
 def get_driver(driver_name):
@@ -50,7 +68,7 @@ def get_driver(driver_name):
         import sqlite3 as db_driver
     elif driver_name == 'cx_Oracle':
         import cx_Oracle as db_driver
-    elif driver_name == 'pyodbc'
+    elif driver_name == 'pyodbc':
         import pyodbc as db_driver
     elif driver_name == 'psycopg2':
         import psycopg2 as db_driver
@@ -62,7 +80,7 @@ def get_driver(driver_name):
     return db_driver
 
 
-def run_query(query_filename, params_dict):
+def run_query(query_filename, params_dict, data_format='list'):
     # set up a db connection from the settings
     db_driver = get_driver(SETTINGS['db_driver'])
     conn = db_driver.connect(SETTINGS['db_connection_string'])
@@ -70,8 +88,15 @@ def run_query(query_filename, params_dict):
 
     # run the query
     cursor.execute(load_query(query_filename), params_dict)
-    # format into a table with header
-    query_results = construct_list(cursor)
+    if data_format == 'list':
+        # format into a table with header
+        query_results = construct_list(cursor)
+    elif data_format == 'dict':
+        # format into dictionary
+        query_results = construct_dict(cursor)
+    elif data_format == 'csv':
+        # format into dictionary
+        query_results = construct_csv(cursor)
     conn.close()
 
     return query_results
