@@ -1,5 +1,6 @@
 import webserver
+import database as db
 
 if __name__ == '__main__':
-    # TODO: remove debug mode
-    webserver.app.run(debug=True)
+
+    webserver.app.run(port=db.SETTINGS['website_port_number'], debug=False)
