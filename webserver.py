@@ -31,9 +31,9 @@ def run(query_filename):
     # TODO: check the form has the right data
     # if it's a GET request, use the query string, otherwise use the form data
     if request.method == 'GET':
-        query_params = request.args
+        query_params = request.args.to_dict()
     elif request.method == 'POST':
-        query_params = request.form
+        query_params = request.form.to_dict()
 
     header, data = db.run_query(query_filename, query_params, data_format='list')
     # api links to download data in json and csv formats
@@ -53,13 +53,13 @@ def run(query_filename):
 
 @app.route('/api/<string:query_filename>.json')
 def api_json(query_filename):
-    query_params = request.args
+    query_params = request.args.to_dict()
     data = db.run_query(query_filename, query_params, data_format='dict')
     return jsonify(params=query_params, data=data)
 
 
 @app.route('/api/<string:query_filename>.csv')
 def api_csv(query_filename):
-    query_params = request.args
+    query_params = request.args.to_dict()
     data = db.run_query(query_filename, query_params, data_format='csv')
     return Response(data, mimetype='text/csv')
