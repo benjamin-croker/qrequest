@@ -3,6 +3,7 @@ import os
 import re
 import io
 import csv
+import sys
 
 # set path names and db connection settings
 SQL_PATH = "sql"
@@ -32,10 +33,13 @@ def construct_list(cursor):
 def construct_csv(cursor):
     """ transforms the db cursor rows into a csv file string
     """
-    # def encode_row(row, encoding='utf-8'):
-    #     return [r.encode(encoding) for r in row]
+    
     header, data = construct_list(cursor)
-    output = io.BytesIO()
+    # python 2 and 3 handle writing files differently
+    if sys.version_info[0] <= 2:
+        output = io.BytesIO()
+    else:
+        output = io.StringIO()
     writer = csv.writer(output)
 
     writer.writerow(header)
