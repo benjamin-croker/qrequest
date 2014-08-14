@@ -1,7 +1,0 @@
-{
-    "db_driver": "<name of python module. eg:sqlite3>",
-    "db_connection_string": "<database connection string. eg:example.db>",
-    "website_title": "qRequest",
-    "website_description": "An example page showing how qRequest can be configured",
-    "website_port_number": 5000
-}
