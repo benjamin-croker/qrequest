@@ -1,5 +1,5 @@
+sql/
+settings/
 __pycache__
 *~
 *.pyc
-sql/*
-settings/*
