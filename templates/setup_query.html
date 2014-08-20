@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <div class="qrequest-nav" role="navigation">
+    <div class="qrequest-nav">
       <div class="container">
         <div class="navbar-brand qrequest-nav-item">{{ title }}</div>
       </div>
@@ -43,7 +43,9 @@
             <div class="form-group">
               <label for="{{ p }}" class="control-label col-md-2">{{ p }}</label>
               <div class="col-md-6">
+                <label>
                   <input type="text" required class="form-control" name="{{ p }}">
+                </label>
               </div>
             </div>
             {% endfor %}
