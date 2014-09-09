@@ -55,13 +55,15 @@ def load_query(query_filename):
 
 
 def get_params(query_filename):
-    # returns a list of all the parameters in the sql file
+    """  returns a list of all the parameters in the sql file
+    """
     query_text = load_query(query_filename)
     return re.compile(r':(\w+)').findall(query_text)
 
 
 def get_queries():
-    # returns a list of all the sql files
+    """ returns a list of all the sql files
+    """
     filenames = os.listdir(SQL_PATH)
     # filter for files ending in ".sql"
     return [f[:-4] for f in filenames if f[-4:] == ".sql"]
@@ -76,6 +78,8 @@ def get_driver(driver_name):
         import psycopg2 as db_driver
     elif driver_name == 'PyMySql':
         import PyMySql as db_driver
+    elif driver_name == 'pyodbc':
+        import pyodbc as db_driver
     else:
         # TODO: pick a better exception type and message
         raise ImportError
@@ -88,8 +92,15 @@ def run_query(query_filename, params_dict, data_format='list'):
     conn = db_driver.connect(SETTINGS['db_connection_string'])
     cursor = conn.cursor()
 
+    # convert the query which used named params into one with ? mark params
+    query_text = load_query(query_filename)
+    query_params = get_params(query_filename)
+    for k in params_dict:
+        query_text = query_text.replace(':'+k, '?')
+
     # run the query
-    cursor.execute(load_query(query_filename), params_dict)
+    cursor.execute(query_text, [params_dict[p] for p in query_params])
+
     if data_format == 'list':
         # format into a table with header
         query_results = construct_list(cursor)
@@ -99,6 +110,8 @@ def run_query(query_filename, params_dict, data_format='list'):
     elif data_format == 'csv':
         # format into dictionary
         query_results = construct_csv(cursor)
+    else:
+        query_results = None
     conn.close()
 
     return query_results

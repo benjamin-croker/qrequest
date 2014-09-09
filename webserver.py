@@ -22,7 +22,8 @@ def setup(query_filename):
     return render_template('setup_query.html',
                            query=query_filename,
                            query_list=db.get_queries(),
-                           params_list=db.get_params(query_filename),
+                           # only use each parameter once
+                           params_list=list(set(db.get_params(query_filename))),
                            title=db.SETTINGS['website_title'])
 
 
@@ -34,6 +35,8 @@ def run(query_filename):
         query_params = request.args.to_dict()
     elif request.method == 'POST':
         query_params = request.form.to_dict()
+    else:
+        query_params = None
 
     header, data = db.run_query(query_filename, query_params, data_format='list')
     # api links to download data in json and csv formats
