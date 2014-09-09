@@ -72,8 +72,6 @@ def get_driver(driver_name):
         import sqlite3 as db_driver
     elif driver_name == 'cx_Oracle':
         import cx_Oracle as db_driver
-    elif driver_name == 'pyodbc':
-        import pyodbc as db_driver
     elif driver_name == 'psycopg2':
         import psycopg2 as db_driver
     elif driver_name == 'PyMySql':
