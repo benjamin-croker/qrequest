@@ -3,10 +3,11 @@ import database as db
 
 app = Flask(__name__)
 
+
 def query_string_from_post(request_form):
     """ creates a query string from POST data
     """
-    return '?'+'&'.join(["{}={}".format(k, request_form[k]) for k in request_form])
+    return '?' + '&'.join(["{}={}".format(k, request_form[k]) for k in request_form])
 
 
 @app.route('/')
@@ -43,7 +44,7 @@ def run(query_filename):
     json_link = '/api/{}.json{}'.format(query_filename,
                                         query_string_from_post(query_params))
     csv_link = '/api/{}.csv{}'.format(query_filename,
-                                        query_string_from_post(query_params))
+                                      query_string_from_post(query_params))
     return render_template('results.html',
                            query=query_filename,
                            query_list=db.get_queries(),
