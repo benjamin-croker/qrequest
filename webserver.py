@@ -1,12 +1,11 @@
+import qrequest
 from flask import Flask, render_template, request, jsonify, Response
 import database as db
 
 app = Flask(__name__)
 
-SQL_PATH = 'sql'
-SETTINGS_FILENAME = 'settings.json'
 # set path names and db connection settings, and build a list of queries
-settings, queries = db.build_settings(SQL_PATH, SETTINGS_FILENAME)
+settings, queries = db.build_settings(qrequest.SQL_PATH, qrequest.SETTINGS_FILENAME)
 
 
 def query_string_from_post(request_form):
