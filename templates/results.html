@@ -4,7 +4,6 @@
   <head>
     <meta charset="utf-8">
     <title>Set up {{query}}</title>
-    <!-- Bootstrap core CSS and default theme-->
     <link href="{{ url_for('static', filename='superhero.bootstrap.min.css') }}" rel="stylesheet">
   </head>
 
@@ -17,19 +16,21 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <ul class="nav nav-pills nav-stacked">
             <li><a href="/">{{ title }} home</a></li>
-            {% for q in query_list %}
-            {% if q == query %}
-            <li class="active"><a href="/setup/{{ q }}">{{ q }}</a></li>
+            {% for s in query_list.keys() %}
+            {% for q in query_list[s] %}
+            {% if q == query_name and s == site_name %}
+            <li class="active"><a href="#">{{ s }}/{{ q }}</a></li>
             {% else %}
-            <li><a href="/setup/{{ q }}">{{ q }}</a></li>
+            <li><a href="/setup/{{ s }}/{{ q }}">{{ s }}/{{ q }}</a></li>
             {% endif %}
+            {% endfor %}
             {% endfor %}
           </ul>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
           <p class="lead">All results for {{query}}</p>
           <a href="{{ csv_link }}" class="btn btn-success">Download as CSV</a>
           <a href="{{ json_link }}" class="btn btn-info">Download as JSON</a>
@@ -37,7 +38,7 @@
             <thead>
               <tr>
                 {% for h in header %}
-                <th>{{h}}</th>
+                <th>{{ h }}</th>
                 {% endfor %}
               </tr>
             </thead>

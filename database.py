@@ -5,12 +5,6 @@ import io
 import csv
 import sys
 
-# set path names and db connection settings
-SQL_PATH = "sql"
-SETTINGS_FILENAME = os.path.join("settings", "settings.json")
-with open(SETTINGS_FILENAME) as settings_fp:
-    SETTINGS = json.load(settings_fp)
-
 
 def construct_dict(cursor):
     """ transforms the db cursor rows from table format to a
@@ -33,7 +27,7 @@ def construct_list(cursor):
 def construct_csv(cursor):
     """ transforms the db cursor rows into a csv file string
     """
-    
+
     header, data = construct_list(cursor)
     # python 2 and 3 handle writing files differently
     if sys.version_info[0] <= 2:
@@ -49,24 +43,32 @@ def construct_csv(cursor):
     return output.getvalue()
 
 
-def load_query(query_filename):
-    with open(os.path.join(SQL_PATH, query_filename+'.sql')) as f:
+def build_settings(sql_path, settings_filename):
+    """ returns a dictionary with the db connection settings and a list of
+        queries
+    """
+    with open(os.path.join(sql_path, settings_filename)) as sf:
+        settings = json.load(sf)
+
+    # get a list of all directories in the sql folder
+    site_names = next(os.walk(sql_path))[1]
+    sites = {s: [f for f in os.listdir(os.path.join(sql_path, s))
+                 if f[-4:] == '.sql']
+             for s in site_names}
+
+    return settings, sites
+
+
+def load_query(sql_path, site_name, query_filename):
+    with open(os.path.join(sql_path, site_name, query_filename)) as f:
         return f.read()
 
 
-def get_params(query_filename):
+def get_params(sql_path, site_name, query_filename):
     """  returns a list of all the parameters in the sql file
     """
-    query_text = load_query(query_filename)
+    query_text = load_query(sql_path, site_name, query_filename)
     return re.compile(r':(\w+)').findall(query_text)
-
-
-def get_queries():
-    """ returns a list of all the sql files
-    """
-    filenames = os.listdir(SQL_PATH)
-    # filter for files ending in ".sql"
-    return [f[:-4] for f in filenames if f[-4:] == ".sql"]
 
 
 def get_driver(driver_name):
@@ -86,17 +88,17 @@ def get_driver(driver_name):
     return db_driver
 
 
-def run_query(query_filename, params_dict, data_format='list'):
+def run_query(settings, sql_path, site_name, query_filename, params_dict, data_format='list'):
     # set up a db connection from the settings
-    db_driver = get_driver(SETTINGS['db_driver'])
-    conn = db_driver.connect(SETTINGS['db_connection_string'])
+    db_driver = get_driver(settings['sites'][site_name]['db_driver'])
+    conn = db_driver.connect(settings['sites'][site_name]['db_connection_string'])
     cursor = conn.cursor()
 
     # convert the query which used named params into one with ? mark params
-    query_text = load_query(query_filename)
-    query_params = get_params(query_filename)
+    query_text = load_query(sql_path, site_name, query_filename)
+    query_params = get_params(sql_path, site_name, query_filename)
     for k in params_dict:
-        query_text = query_text.replace(':'+k, '?')
+        query_text = query_text.replace(':' + k, '?')
 
     # run the query
     cursor.execute(query_text, [params_dict[p] for p in query_params])
@@ -115,5 +117,3 @@ def run_query(query_filename, params_dict, data_format='list'):
     conn.close()
 
     return query_results
-
-
