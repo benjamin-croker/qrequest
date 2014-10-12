@@ -3,7 +3,7 @@ import sys
 import json
 import errno
 
-SQL_PATH = 'sql_test'
+SQL_PATH = 'sql'
 SETTINGS_FILENAME = 'settings.json'
 
 
