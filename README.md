@@ -43,3 +43,39 @@ to run the query with param1=1234 and param2="string", go to
 ```
 /api/main/example_query.sql.csv?param1=1234&param2=string
 ```
+
+# Multiple Sites
+
+qrequest supports multiple database connections, which are called sites.
+To setup qrequest for multiple sites, pass all the site names as arguments to the
+`setup` command. If none are passed, one site called `main` is created by default.
+
+As an example, to setup two sites called `site1` and `site2` run
+
+```
+python qrequest.py setup site1 site2
+```
+
+This will generate the following settings file
+
+```
+{
+    "sites": {
+        "site1": {
+            "db_connection_string": "<database connection string>",
+            "db_driver": "<python module name>"
+        },
+        "site2": {
+            "db_connection_string": "<database connection string>",
+            "db_driver": "<python module name>"
+        }
+    },
+    "website_description": "Run some queries",
+    "website_port_number": 5000,
+    "website_title": "qRequest"
+}
+```
+
+You can specify different connection strings and database drivers for each site.
+
+
