@@ -22,6 +22,9 @@ def setup(sql_path, settings_filename, site_names):
     """
     # make the directory structure
     make_directory(sql_path)
+    # make a default site if the site names are blank
+    if len(site_names) == 0:
+        site_names = ['main']
     for site_name in site_names:
         make_directory(os.path.join(SQL_PATH, site_name))
 
