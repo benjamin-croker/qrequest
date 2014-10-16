@@ -3,43 +3,32 @@ qrequest
 
 Instantly create an API and web interface for SQL queries.
 
-# Basic Setup
 
 1. Write SQL queries to collect the data users can access. Use :keywords for parameters.
-2. Run `python qrequest.py setup` to get an sql folder to put your queries and default settings file 
-2. Put these queries in the sql/main directory
-3. Modify the settings below to specify the database driver (name of the python module) and databsae connection string
-4. Then run `python qrequest.py run` to get a website which lets users run any of your queries without installing a thing, as well as an API endpoint.
+2. Put these queries in the sql/ directory
+3. Modify the settings below and save as settings/settings.json
+4. Then run `python qrequest.py` to get a website which lets users run any of your queries without installing a thing, as well as an API endpoint.
 
-The settings file looks like this. You can change the website title, description and the port the site runs on
+Use the example below for the settings.json file
 ```
 {
-    "sites": {
-        "main": {
-            "db_connection_string": "<database connection string>",
-            "db_driver": "<python module name>"
-        }
-    },
-    "website_description": "Run some queries",
-    "website_port_number": 5000,
-    "website_title": "qRequest"
+    "db_driver": "<name of python module. eg:sqlite3>",
+    "db_connection_string": "<database connection string. eg:example.db>",
+    "website_title": "qRequest",
+    "website_description": "An example page showing how qRequest can be configured",
+    "website_port_number": 5000
 }
 ```
 
 Users can view queries through the web interface, and download the json or csv formatted query results.
 
+
 The URL format for the json endpoint is
 ```
-/api/{site_name}/{query_name}.json?{params}
+/api/query_name.json?first_param=value1&second_param=value2
 ```
 
 The URL format for the CSV endpoint is
 ```
-/api/{site_name}/{query_name}.csv?{params}
+/api/query_name.csv?first_param=value1&second_param=value2
 ``` 
-
-As an example, if you have a query called example_query.sql with two parameters (param1 and param2),
-to run the query with param1=1234 and param2="string", go to
-```
-/api/main/example_query.sql.csv?param1=1234&param2=string
-```

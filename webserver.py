@@ -30,7 +30,7 @@ def setup(site_name, query_filename):
                            query_name=query_filename,
                            query_list=queries,
                            # only use each parameter once
-                           params_list=list(set(db.get_params(qrequest.SQL_PATH, site_name, query_filename))),
+                           params_list=list(set(db.get_params(SQL_PATH, site_name, query_filename))),
                            title=settings['website_title'])
 
 
@@ -45,7 +45,7 @@ def run(site_name, query_filename):
     else:
         query_params = None
 
-    header, data = db.run_query(settings, qrequest.SQL_PATH, site_name, query_filename,
+    header, data = db.run_query(settings, SQL_PATH, site_name, query_filename,
                                 query_params, data_format='list')
 
     # api links to download data in json and csv formats
@@ -67,7 +67,7 @@ def run(site_name, query_filename):
 @app.route('/api/<string:site_name>/<string:query_filename>.json')
 def api_json(site_name, query_filename):
     query_params = request.args.to_dict()
-    data = db.run_query(settings, qrequest.SQL_PATH, site_name, query_filename,
+    data = db.run_query(settings, SQL_PATH, site_name, query_filename,
                         query_params, data_format='dict')
     return jsonify(params=query_params, data=data)
 
@@ -75,6 +75,6 @@ def api_json(site_name, query_filename):
 @app.route('/api/<string:site_name>/<string:query_filename>.csv')
 def api_csv(site_name, query_filename):
     query_params = request.args.to_dict()
-    data = db.run_query(settings, qrequest.SQL_PATH, site_name, query_filename,
+    data = db.run_query(settings, SQL_PATH, site_name, query_filename,
                         query_params, data_format='csv')
     return Response(data, mimetype='text/csv')
