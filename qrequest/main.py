@@ -6,7 +6,6 @@ import errno
 SQL_PATH = 'sql'
 SETTINGS_FILENAME = 'settings.json'
 
-
 def make_directory(path):
     """ makes a directory, checking if it exists first
     """
@@ -43,12 +42,12 @@ def setup(sql_path, settings_filename, site_names):
 def run():
     """ runs the site
     """
-    import webserver
+    from . import webserver as ws
 
-    webserver.app.run(host='0.0.0.0', port=webserver.settings['website_port_number'], debug=True)
+    ws.app.run(host='0.0.0.0', port=ws.settings['website_port_number'], debug=True)
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) > 1:
         command = sys.argv[1]
     else:
