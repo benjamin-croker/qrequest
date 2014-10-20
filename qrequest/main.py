@@ -44,7 +44,7 @@ def run():
     """
     from . import webserver as ws
 
-    ws.app.run(host='0.0.0.0', port=ws.settings['website_port_number'], debug=True)
+    ws.app.run(host='0.0.0.0', port=ws.settings['website_port_number'], debug=False)
 
 
 def main():
