@@ -15,11 +15,11 @@ The current version is 0.1.12
 
 # Basic Setup
 
-1. Write SQL queries to collect the data users can access. Use :keywords for parameters.
-2. Run `$ qrequest setup` to get an sql folder to put your queries and default settings file
-2. Put these queries in the sql/main directory
-3. Modify the settings below to specify the database driver (name of the python module) and databsae connection string
-4. Then run `$ qrequest run` to get a website which lets users run any of your queries without installing a thing, as well as an API endpoint.
+1. Write SQL queries to return data to the users. Use :keywords for parameters.
+2. Run `$ qrequest setup` to create sql folder to put your queries and a template settings file
+2. Put the SQL queries in the sql/main directory
+3. Modify the settings file (sql/settings.json) to specify the database driver (name of the python module) and database connection string
+4. Run `$ qrequest run` to get a website which lets users run any of your queries without installing a thing, as well as an API endpoint for downloading JSON and CSV formatted data.
 
 The settings file looks like this. You can change the website title, description and the port the site runs on
 ```
@@ -40,19 +40,20 @@ Users can view queries through the web interface, and download the json or csv f
 
 The URL format for the json endpoint is
 ```
-/api/{site_name}/{query_name}.json?{params}
+.../api/{site_name}/{query_name}.json?{params}
 ```
 
 The URL format for the CSV endpoint is
 ```
-/api/{site_name}/{query_name}.csv?{params}
+////api/{site_name}/{query_name}.csv?{params}
 ``` 
 
 As an example, if you have a query called example_query.sql with two parameters (param1 and param2),
 to run the query with param1=1234 and param2="string", go to
 ```
-/api/main/example_query.sql.csv?param1=1234&param2=string
+.../api/main/example_query.sql.csv?param1=1234&param2=string
 ```
+to download a CSV file of the results.
 
 # Multiple Sites
 
