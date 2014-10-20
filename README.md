@@ -5,10 +5,15 @@ Instantly create an API and web interface for SQL queries.
 
 # Installation
 
-qrequest can be installed with pip. Just run
+qrequest can be installed with pip
 
 ```
 $ pip install qrequest
+```
+
+qrequest depends on [Flask](http://flask.pocoo.org/), which you may need to install first
+```
+$ pip install flask
 ```
 
 The current version is 0.1.12
@@ -45,7 +50,7 @@ The URL format for the json endpoint is
 
 The URL format for the CSV endpoint is
 ```
-////api/{site_name}/{query_name}.csv?{params}
+.../api/{site_name}/{query_name}.csv?{params}
 ``` 
 
 As an example, if you have a query called example_query.sql with two parameters (param1 and param2),
