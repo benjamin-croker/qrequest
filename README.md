@@ -5,7 +5,7 @@ Instantly create an API and web interface for SQL queries.
 
 # Installation
 
-qrequest can be installed with pip
+qrequest can be installed with [pip](https://pypi.python.org/pypi/pip)
 
 ```
 $ pip install qrequest
