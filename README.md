@@ -3,13 +3,23 @@ qrequest
 
 Instantly create an API and web interface for SQL queries.
 
+# Installation
+
+qrequest can be installed with pip. Just run
+
+```
+pip install qrequest
+```
+
+The current version is 0.1.12
+
 # Basic Setup
 
 1. Write SQL queries to collect the data users can access. Use :keywords for parameters.
-2. Run `python qrequest.py setup` to get an sql folder to put your queries and default settings file 
+2. Run `$ qrequest setup` to get an sql folder to put your queries and default settings file
 2. Put these queries in the sql/main directory
 3. Modify the settings below to specify the database driver (name of the python module) and databsae connection string
-4. Then run `python qrequest.py run` to get a website which lets users run any of your queries without installing a thing, as well as an API endpoint.
+4. Then run `$ qrequest run` to get a website which lets users run any of your queries without installing a thing, as well as an API endpoint.
 
 The settings file looks like this. You can change the website title, description and the port the site runs on
 ```
@@ -53,7 +63,7 @@ To setup qrequest for multiple sites, pass all the site names as arguments to th
 As an example, to setup two sites called `site1` and `site2` run
 
 ```
-python qrequest.py setup site1 site2
+$ qrequest setup site1 site2
 ```
 
 This will generate the following settings file
